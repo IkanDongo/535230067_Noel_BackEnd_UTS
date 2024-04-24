@@ -7,18 +7,7 @@ module.exports = {
     body: {
       name: joi.string().min(1).max(100).required().label('Name'),
       email: joi.string().email().required().label('Email'),
-      password: joiPassword
-        .string()
-        .minOfSpecialCharacters(1)
-        .minOfLowercase(1)
-        .minOfUppercase(1)
-        .minOfNumeric(1)
-        .noWhiteSpaces()
-        .onlyLatinCharacters()
-        .min(6)
-        .max(32)
-        .required()
-        .label('Password'),
+      password: joiPassword.string().minOfSpecialCharacters(1).minOfLowercase(1).minOfUppercase(1).minOfNumeric(1).noWhiteSpaces().onlyLatinCharacters().min(6).max(32).required().label('Password'),
       password_confirm: joi.string().required().label('Password confirmation'),
     },
   },
