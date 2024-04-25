@@ -1,6 +1,5 @@
 const usersService = require('./users-service');
 const { errorResponder, errorTypes } = require('../../../core/errors');
-const { result } = require('lodash');
 
 /**
  * Handle get list of users request
@@ -11,8 +10,10 @@ const { result } = require('lodash');
  */
 async function getUsers(request, response, next) {
   try {
-    const {page_number, page_size} = req.query;
-    const users = await usersService.getUsers(page_number,page_size);
+    const page_number= parseInt(request.query.page_number)-1 || 0;
+    const page_size = parseInt(request.query.page_size) || 1/0;
+
+    const users = await usersService.getUsers(page_number, page_size);
     return response.status(200).json(users);
   } catch (error) {
     return next(error);

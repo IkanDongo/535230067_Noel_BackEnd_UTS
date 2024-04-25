@@ -4,9 +4,21 @@ const { User } = require('../../../models');
  * Get a list of users
  * @returns {Promise}
  */
-async function getUsers() {
-  return User.find({});
+async function getUsers(page_number, page_size) {
+  const users = await User.find({})
+  .skip(page_number * page_size)
+  .limit(page_size);
+  return users;
 }
+
+
+async function getUserCount() {
+  const count = await User.countDocuments();
+  return count;
+}
+
+
+
 
 /**
  * Get user detail
@@ -89,4 +101,5 @@ module.exports = {
   deleteUser,
   getUserByEmail,
   changePassword,
+  getUserCount,
 };

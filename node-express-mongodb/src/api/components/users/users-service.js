@@ -1,27 +1,29 @@
 const usersRepository = require('./users-repository');
 const { hashPassword, passwordMatched } = require('../../../utils/password');
+const { result } = require('lodash');
 
 /**
  * Get list of users
  * @returns {Array}
  */
-async function getUsers(page_number = 1, page_size = 10) {
-  const page_number = (page_number - 1) * page_size;
-  const users = await userRepository.getUsers(page_number, page_size);
-  const totalcount = await userRepository.getUserCount(); 
-  const totalpages = (totalcount + page_number - 1) / page_size;
+async function getUsers(page_number , page_size) {
+  const users = await usersRepository.getUsers(page_number, page_size);
+  const totalcount = await usersRepository.getUserCount();   
+  const totalpages = totalcount / page_size;
   const previouspage = page_number > 1;
-  const nextpage = page_number < totalpages 
+  const nextpage = page_number < totalpages;
   
-return{
-  page_number: parseInt(page_number),
-  page_size: parseInt(page_size),
-  count: users.length,
+const results ={
+  page_number: page_number + 1,
+  page_size: page_size,
+  count: totalcount,
   total_pages: totalpages,
   has_previous_page: previouspage,
   has_next_page: nextpage,
-}
-}
+  users: userss(users)
+  };
+
+function userss(users){
 
   const results = [];
   for (let i = 0; i < users.length; i += 1) {
@@ -31,9 +33,12 @@ return{
       name: user.name,
       email: user.email,
     });
+  
   }
-
   return results;
+}
+return results;  
+}
 
 
 /**
