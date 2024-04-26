@@ -4,12 +4,16 @@ const { result } = require('lodash');
 
 /**
  * Get list of users
+ * @param {number} page_number - Page number
+ * @param {number} page_size - Page size
+ * @param {string} search - Search keyword for email
  * @returns {Array}
  */
-async function getUsers(page_number , page_size) {
-  const users = await usersRepository.getUsers(page_number, page_size);
-  const totalcount = await usersRepository.getUserCount();   
-  const totalpages = totalcount / page_size;
+
+async function getUsers(page_number, page_size, search,sort) {
+  const users = await usersRepository.getUsers(page_number, page_size, search, sort);
+  const totalcount = await usersRepository.getUserCount(page_number,page_size, search);   
+  const totalpages = Math.ceil(totalcount / page_size);
   const previouspage = page_number > 1;
   const nextpage = page_number < totalpages;
   
@@ -20,8 +24,13 @@ const results ={
   total_pages: totalpages,
   has_previous_page: previouspage,
   has_next_page: nextpage,
-  users: userss(users)
+  users: userss(users),
   };
+
+  // if(page_number > totalpages-1){
+  //   return'pagenotfound';
+  // }  
+  
 
 function userss(users){
 
@@ -33,12 +42,14 @@ function userss(users){
       name: user.name,
       email: user.email,
     });
-  
+
   }
   return results;
 }
-return results;  
+return results; 
 }
+
+
 
 
 /**

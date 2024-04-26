@@ -2,18 +2,46 @@ const { User } = require('../../../models');
 
 /**
  * Get a list of users
+ * @param {number} page_number - Page number
+ * @param {number} page_size - Page size
+ * @param {string} search - Search keyword for email
  * @returns {Promise}
  */
-async function getUsers(page_number, page_size) {
-  const users = await User.find({})
+async function getUsers(page_number, page_size,search,sort) {
+  let filter = {};
+  var search= search.split(':')
+  if (search[0] === "email") {
+    filter = { email: { $regex: search[1], $options: "i" } }; 
+  } else if (search[0] === "name") {
+    filter = { name: { $regex: search[1], $options: "i" } }; 
+  }
+  
+  let sorting = {};
+  sort = sort.split(':');
+  sorting[sort[0]] = sort[1]; 
+
+
+  const users = User.find(filter)
   .skip(page_number * page_size)
-  .limit(page_size);
+  .limit(page_size)
+  .sort(sorting);
   return users;
 }
 
 
-async function getUserCount() {
-  const count = await User.countDocuments();
+async function getUserCount(page_number, page_size,search) {
+  let filter = {};
+  var search= search.split(':')
+  console.log(search[0])
+  if (search[0] === "email") {
+    filter = { email: { $regex: search[1], $options: "i" } }; 
+  } else if (search[0] === "name") {
+    filter = { name: { $regex: search[1], $options: "i" } }; 
+  }
+  
+  const count = User.countDocuments(filter)
+  .skip(page_number * page_size)
+  .limit(page_size)
   return count;
 }
 

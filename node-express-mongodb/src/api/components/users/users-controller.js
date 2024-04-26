@@ -12,8 +12,16 @@ async function getUsers(request, response, next) {
   try {
     const page_number= parseInt(request.query.page_number)-1 || 0;
     const page_size = parseInt(request.query.page_size) || 1/0;
+    const search = request.query.search|| "";
+    const sort = request.query.sort || "";
+    const users = await usersService.getUsers(page_number, page_size,search,sort);
+    
+    
+  //if(users == 'pagenotfound'){
+  //   throw errorResponder(
+  //     errorTypes.PAGE_NOT_FOUND, 'Page not found');
+  // }
 
-    const users = await usersService.getUsers(page_number, page_size);
     return response.status(200).json(users);
   } catch (error) {
     return next(error);
