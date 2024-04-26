@@ -40,8 +40,6 @@ async function getUserCount(page_number, page_size,search) {
   }
   
   const count = User.countDocuments(filter)
-  .skip(page_number * page_size)
-  .limit(page_size)
   return count;
 }
 
