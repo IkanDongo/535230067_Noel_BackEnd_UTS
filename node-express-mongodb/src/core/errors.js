@@ -164,7 +164,13 @@ const errorTypes = {
     status: 500,
     code: 'DB_ERROR',
   },
+  DB: {
+    description: 'Page not found',
+    status: 500,
+    code: 'PAGE_NOT_FOUND',
+  },
 };
+
 
 const errorResponder = (errorType, message = '', validationErrors = null) => {
   const error = new Error(message);
