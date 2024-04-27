@@ -7,6 +7,7 @@ const { result } = require('lodash');
  * @param {number} page_number - Page number
  * @param {number} page_size - Page size
  * @param {string} search - Search keyword for email
+ * @param {string} sort - Sorting by ascending and descending
  * @returns {Array}
  */
 

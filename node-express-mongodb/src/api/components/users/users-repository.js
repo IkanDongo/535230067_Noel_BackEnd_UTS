@@ -5,11 +5,12 @@ const { User } = require('../../../models');
  * @param {number} page_number - Page number
  * @param {number} page_size - Page size
  * @param {string} search - Search keyword for email
+ * @param {string} sort - Sorting by ascending and descending
  * @returns {Promise}
  */
 async function getUsers(page_number, page_size,search,sort) {
   let filter = {};
-  var search= search.split(':')
+  var search= search.split(':');
   if (search[0] === "email") {
     filter = { email: { $regex: search[1], $options: "i" } }; 
   } else if (search[0] === "name") {
@@ -17,7 +18,7 @@ async function getUsers(page_number, page_size,search,sort) {
   }
   
   let sorting = {};
-  sort = sort.split(':');
+  var sort = sort.split(':');
   sorting[sort[0]] = sort[1]; 
 
 
@@ -31,8 +32,7 @@ async function getUsers(page_number, page_size,search,sort) {
 
 async function getUserCount(page_number, page_size,search) {
   let filter = {};
-  var search= search.split(':')
-  console.log(search[0])
+  var search= search.split(':');
   if (search[0] === "email") {
     filter = { email: { $regex: search[1], $options: "i" } }; 
   } else if (search[0] === "name") {
