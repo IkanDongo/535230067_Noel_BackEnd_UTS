@@ -11,14 +11,15 @@ const authenticationServices = require('./authentication-service');
  */
 async function login(request, response, next) {
   const { email, password } = request.body;
-
+  const currenttime = new Date();
+  // check login attempt
   try {
     const attempt = authenticationServices.getLoginAttempts(email);
     if(attempt >= 6){
       console.log(attempt)
       throw errorResponder(
         errorTypes.INVALID_CREDENTIALS,
-        'Forbidden: Too many failed login attempts. Your account have been locked 30 minutes, please try again later'
+        `${currenttime} Too many failed login attempts. Your account have been locked 30 minutes, please try again later`
       )
     }
     // Check login credentials
@@ -30,7 +31,7 @@ async function login(request, response, next) {
     if (!loginSuccess) {
       throw errorResponder(
         errorTypes.INVALID_CREDENTIALS,
-        'Wrong email or password for',email ,'attempt=',attempt
+        `Wrong email or password for ${email} attempt = ${attempt}`
       );
     }
 
