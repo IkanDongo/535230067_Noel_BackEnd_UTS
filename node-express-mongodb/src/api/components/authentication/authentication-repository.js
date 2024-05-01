@@ -10,15 +10,14 @@ async function getUserByEmail(email) {
   return User.findOne({ email });
 }
 
-/** 
+/**
  * Get user by email to prevent duplicate email
  * @param {string} email - Email
  * @returns {Promise}
  */
-async function getLoginAttempts(email, attempt) {
-  return Attempt.findOne({ email, attempt });
+async function getLoginAttempts(email) {
+  return Attempt.findOne({ email });
 }
-
 
 /**
  * Create new user
@@ -44,16 +43,15 @@ async function createAttempt(email, attempt) {
 async function updateAttempt(email, attempt) {
   return Attempt.updateOne(
     {
-      email:email,
+      email: email,
     },
     {
       $set: {
-        attempt
+        attempt,
       },
     }
   );
 }
-
 
 module.exports = {
   getUserByEmail,

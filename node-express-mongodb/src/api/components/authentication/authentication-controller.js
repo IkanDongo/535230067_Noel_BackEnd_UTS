@@ -1,4 +1,3 @@
-const { update } = require('lodash');
 const { errorResponder, errorTypes } = require('../../../core/errors');
 const { User } = require('../../../models');
 const authenticationServices = require('./authentication-service');
@@ -12,39 +11,32 @@ const authenticationServices = require('./authentication-service');
  */
 async function login(request, response, next) {
   const { email, password } = request.body;
-  const currenttime = new Date();
+  const currenttime = new Date().toLocaleString();
   // check login attempt
   try {
-    const attempt = authenticationServices.getLoginAttempts(email);
-    if(attempt >= 6){
+    let attempt = await authenticationServices.getLoginAttempts(email);
+    if (attempt >= 6) {
       throw errorResponder(
         errorTypes.INVALID_CREDENTIALS,
         `${currenttime} Too many failed login attempts. Your account have been locked 30 minutes, please try again later`
       );
     }
-    const checkAttempt = authenticationServices.getLoginAttempts(email);
-    if(checkAttempt){
-    const update = authenticationServices.updateAttempt(email, attempt);
-      if(!update){
-      throw errorResponder(
-        errorTypes.INVALID_CREDENTIALS,
-        `cannot update attempt`
-      );
-    }
-  }else{
+    if (!attempt) {
+      attempt = 1;
       const create = authenticationServices.createAttempt(email, attempt);
-      if(!create){
+      if (!create) {
         throw errorResponder(
           errorTypes.INVALID_CREDENTIALS,
           `cannot create attempt`
         );
+      }
     }
-  }
 
     // Check login credentials
     const loginSuccess = await authenticationServices.checkLoginCredentials(
       email,
       password,
+      attempt
     );
 
     if (!loginSuccess) {
