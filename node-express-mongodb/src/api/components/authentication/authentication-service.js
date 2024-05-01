@@ -2,7 +2,6 @@ const authenticationRepository = require('./authentication-repository');
 const { generateToken } = require('../../../utils/session-token');
 const { passwordMatched } = require('../../../utils/password');
 
-
 /**
  * Check username and password for login.
  * @param {string} email - Email
@@ -53,8 +52,41 @@ function getLoginAttempts(email){
   return attempt[email] || 1;
   
 }
+/**
+ * Create new attempt
+ * @param {string} email - Email
+ * @param {string} attempt - Password
+ * @returns {boolean}
+ */
+async function createAttempt(email, attempt) {
+  try {
+    await authenticationRepository.createAttempt(email, attempt);
+  } catch (err) {
+    return null;
+  }
+
+  return true;
+}
+/**
+ * Update existing user
+ * @param {string} id - User ID
+ * @param {string} name - Name
+ * @param {string} email - Email
+ * @returns {boolean}
+ */
+async function updateAttempt(email, attempt) {
+try {
+    await authenticationRepository.updateAttempt(email, attempt);
+  } catch (err) {
+    return null;
+  }
+
+  return true;
+}
 
 module.exports = {
   checkLoginCredentials,
   getLoginAttempts,
+  createAttempt,
+  updateAttempt,
 };

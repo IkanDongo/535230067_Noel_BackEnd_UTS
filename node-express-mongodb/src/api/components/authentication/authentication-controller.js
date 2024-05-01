@@ -1,5 +1,4 @@
 const { errorResponder, errorTypes } = require('../../../core/errors');
-const { User } = require('../../../models');
 const authenticationServices = require('./authentication-service');
 
 /**
@@ -41,6 +40,26 @@ async function login(request, response, next) {
   }
 }
 
+
+/**
+ * Handle create user request
+ * @param {object} request - Express request object
+ * @param {object} response - Express response object
+ * @param {object} next - Express route middlewares
+ * @returns {object} Response object or pass an error to the next route
+ */
+async function createAttempt(request, response, next) {
+  try {
+    const name = request.body.name;
+    const attempt = request.body.attempt;
+
+  return response.status(200).json({ name, attempt });
+} catch (error) {
+  return next(error);
+}
+}
+
 module.exports = {
   login,
+  createAttempt,
 };
