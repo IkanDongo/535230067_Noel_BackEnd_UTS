@@ -15,8 +15,8 @@ async function getUserByEmail(email) {
  * @param {string} email - Email
  * @returns {Promise}
  */
-async function getLoginAttempts(email) {
-  return Attempt.findOne({ email });
+async function getLoginAttempts(email, attempt) {
+  return Attempt.findOne({ email, attempt });
 }
 
 

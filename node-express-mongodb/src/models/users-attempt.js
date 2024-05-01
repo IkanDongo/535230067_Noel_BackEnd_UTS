@@ -1,6 +1,6 @@
 const usersAttempt = {
   email: String,
-  attempt: Number,
+  attempt: String,
 };
 
 module.exports = usersAttempt;
