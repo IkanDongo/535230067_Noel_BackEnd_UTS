@@ -20,10 +20,9 @@ async function getLoginAttempts(email) {
 }
 
 /**
- * Create new user
- * @param {string} name - Name
+ * Create new attempt
  * @param {string} email - Email
- * @param {string} password - Hashed password
+ * @param {string} attempt - Attempt
  * @returns {Promise}
  */
 async function createAttempt(email, attempt) {
@@ -34,10 +33,9 @@ async function createAttempt(email, attempt) {
 }
 
 /**
- * Update existing user
- * @param {string} id - User ID
- * @param {string} name - Name
+ * Update existing attempt
  * @param {string} email - Email
+ * @param {string} attempt - Attempt
  * @returns {Promise}
  */
 async function updateAttempt(email, attempt) {

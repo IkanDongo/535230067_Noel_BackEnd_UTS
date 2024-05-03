@@ -10,7 +10,7 @@ const { passwordMatched } = require('../../../utils/password');
  */
 
 async function checkLoginCredentials(email, password, attempt) {
-  // Jika sudah, tambahkan 1 ke nilai attempt[email] (karena ini adalah percobaan baru)
+  // its for an increment attempt
   attempt++;
   authenticationRepository.updateAttempt(email, attempt);
 
@@ -28,13 +28,14 @@ async function checkLoginCredentials(email, password, attempt) {
     attempt = 1;
     setTimeout(
       () => authenticationRepository.updateAttempt(email, attempt),
-      18000
+      1800000
     );
   }
   // Because we always check the password (see above comment), we define the
   // login attempt as successful when the `user` is found (by email) and
   // the password matches.
   if (user && passwordChecked) {
+    //if succes the attempt will reset it self to 1
     attempt = 1;
     authenticationRepository.updateAttempt(email, attempt);
     return {
@@ -63,7 +64,7 @@ async function getLoginAttempts(email) {
 /**
  * Create new attempt
  * @param {string} email - Email
- * @param {string} attempt - Password
+ * @param {string} attempt - Attempt
  * @returns {Promise}
  */
 async function createAttempt(email, attempt) {
@@ -77,9 +78,8 @@ async function createAttempt(email, attempt) {
 }
 /**
  * Update existing user
- * @param {string} id - User ID
- * @param {string} name - Name
  * @param {string} email - Email
+ * @param {string} attempt - Attempt
  * @returns {Promise}
  */
 async function updateAttempt(email, attempt) {

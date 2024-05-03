@@ -15,12 +15,14 @@ async function login(request, response, next) {
   // check login attempt
   try {
     let attempt = await authenticationServices.getLoginAttempts(email);
+    // if reach 6 it will throw an error
     if (attempt >= 6) {
       throw errorResponder(
         errorTypes.INVALID_CREDENTIALS,
         `${currenttime} Too many failed login attempts. Your account have been locked 30 minutes, please try again later`
       );
     }
+    // Condition if fail and there is no attempt it wil create attempt if its error
     if (!attempt) {
       attempt = 1;
       const create = authenticationServices.createAttempt(email, attempt);
@@ -38,7 +40,7 @@ async function login(request, response, next) {
       password,
       attempt
     );
-
+    //it will throw an error for the email and how many attempts
     if (!loginSuccess) {
       throw errorResponder(
         errorTypes.INVALID_CREDENTIALS,
