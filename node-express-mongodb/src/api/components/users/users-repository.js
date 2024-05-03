@@ -8,43 +8,38 @@ const { User } = require('../../../models');
  * @param {string} sort - Sorting by ascending and descending
  * @returns {Promise}
  */
-async function getUsers(page_number, page_size,search,sort) {
+async function getUsers(page_number, page_size, search, sort) {
   let filter = {};
-  var search= search.split(':');
-  if (search[0] === "email") {
-    filter = { email: { $regex: search[1], $options: "i" } }; 
-  } else if (search[0] === "name") {
-    filter = { name: { $regex: search[1], $options: "i" } }; 
+  var search = search.split(':');
+  if (search[0] === 'email') {
+    filter = { email: { $regex: search[1], $options: 'i' } };
+  } else if (search[0] === 'name') {
+    filter = { name: { $regex: search[1], $options: 'i' } };
   }
-  
+
   let sorting = {};
   var sort = sort.split(':');
-  sorting[sort[0]] = sort[1]; 
-
+  sorting[sort[0]] = sort[1];
 
   const users = User.find(filter)
-  .skip(page_number * page_size)
-  .limit(page_size)
-  .sort(sorting);
+    .skip(page_number * page_size)
+    .limit(page_size)
+    .sort(sorting);
   return users;
 }
 
-
-async function getUserCount(page_number, page_size,search) {
+async function getUserCount(page_number, page_size, search) {
   let filter = {};
-  var search= search.split(':');
-  if (search[0] === "email") {
-    filter = { email: { $regex: search[1], $options: "i" } }; 
-  } else if (search[0] === "name") {
-    filter = { name: { $regex: search[1], $options: "i" } }; 
+  var search = search.split(':');
+  if (search[0] === 'email') {
+    filter = { email: { $regex: search[1], $options: 'i' } };
+  } else if (search[0] === 'name') {
+    filter = { name: { $regex: search[1], $options: 'i' } };
   }
-  
-  const count = User.countDocuments(filter)
+
+  const count = User.countDocuments(filter);
   return count;
 }
-
-
-
 
 /**
  * Get user detail

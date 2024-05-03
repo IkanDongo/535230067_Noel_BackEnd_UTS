@@ -11,47 +11,46 @@ const { result } = require('lodash');
  * @returns {Array}
  */
 
-async function getUsers(page_number, page_size, search,sort) {
-  const users = await usersRepository.getUsers(page_number, page_size, search, sort);
-  const totalcount = await usersRepository.getUserCount(page_number,page_size, search);   
+async function getUsers(page_number, page_size, search, sort) {
+  const users = await usersRepository.getUsers(
+    page_number,
+    page_size,
+    search,
+    sort
+  );
+  const totalcount = await usersRepository.getUserCount(
+    page_number,
+    page_size,
+    search
+  );
   const totalpages = Math.ceil(totalcount / page_size);
   const previouspage = page_number > 1;
   const nextpage = page_number < totalpages;
-  
-const results ={
-  page_number: page_number + 1,
-  page_size: page_size,
-  count: totalcount,
-  total_pages: totalpages,
-  has_previous_page: previouspage,
-  has_next_page: nextpage,
-  users: userss(users),
+
+  const results = {
+    page_number: page_number + 1,
+    page_size: page_size,
+    count: totalcount,
+    total_pages: totalpages,
+    has_previous_page: previouspage,
+    has_next_page: nextpage,
+    users: userss(users),
   };
 
-  // if(page_number > totalpages-1){
-  //   return'pagenotfound';
-  // }  
-  
-
-function userss(users){
-
-  const results = [];
-  for (let i = 0; i < users.length; i += 1) {
-    const user = users[i];
-    results.push({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    });
-
+  function userss(users) {
+    const results = [];
+    for (let i = 0; i < users.length; i += 1) {
+      const user = users[i];
+      results.push({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      });
+    }
+    return results;
   }
   return results;
 }
-return results; 
-}
-
-
-
 
 /**
  * Get user detail

@@ -20,5 +20,5 @@ const Attempt = mongoose.model('attempt', mongoose.Schema(usersAttempt));
 module.exports = {
   mongoose,
   User,
- Attempt,
+  Attempt,
 };

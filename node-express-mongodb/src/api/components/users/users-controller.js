@@ -10,17 +10,16 @@ const { errorResponder, errorTypes } = require('../../../core/errors');
  */
 async function getUsers(request, response, next) {
   try {
-    const page_number= parseInt(request.query.page_number)-1 || 0;
-    const page_size = parseInt(request.query.page_size) || 1/0;
-    const search = request.query.search|| "";
-    const sort = request.query.sort || "name:asc";
-    const users = await usersService.getUsers(page_number, page_size,search,sort);
-    
-    
-  //if(users == 'pagenotfound'){
-  //   throw errorResponder(
-  //     errorTypes.PAGE_NOT_FOUND, 'Page not found');
-  // }
+    const page_number = parseInt(request.query.page_number) - 1 || 0;
+    const page_size = parseInt(request.query.page_size) || 1 / 0;
+    const search = request.query.search || '';
+    const sort = request.query.sort || 'name:asc';
+    const users = await usersService.getUsers(
+      page_number,
+      page_size,
+      search,
+      sort
+    );
 
     return response.status(200).json(users);
   } catch (error) {
