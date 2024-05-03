@@ -4,6 +4,7 @@ const logger = require('../core/logger')('app');
 
 const usersSchema = require('./users-schema');
 const usersAttempt = require('./users-attempt');
+const olshopsSchema = require('./olshops-schema');
 
 mongoose.connect(`${config.database.connection}/${config.database.name}`, {
   useNewUrlParser: true,
@@ -16,9 +17,11 @@ db.once('open', () => {
 
 const User = mongoose.model('users', mongoose.Schema(usersSchema));
 const Attempt = mongoose.model('attempt', mongoose.Schema(usersAttempt));
+const Olshops = mongoose.model('Olshops', mongoose.Schema(olshopsSchema));
 
 module.exports = {
   mongoose,
   User,
   Attempt,
+  Olshops,
 };

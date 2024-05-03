@@ -1,6 +1,7 @@
 const usersAttempt = {
+  name: String,
   email: String,
-  attempt: String,
+  password: String,
 };
 
 module.exports = usersAttempt;
