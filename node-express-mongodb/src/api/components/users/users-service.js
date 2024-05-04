@@ -25,8 +25,9 @@ async function getUsers(page_number, page_size, search, sort) {
   );
   const totalpages = Math.ceil(totalcount / page_size);
   const previouspage = page_number > 1;
-  const nextpage = page_number < totalpages;
-
+  const nextpage = page_number < totalpages - 1;
+  console.log(page_number);
+  console.log(totalpages);
   const results = {
     page_number: page_number + 1,
     page_size: page_size,
