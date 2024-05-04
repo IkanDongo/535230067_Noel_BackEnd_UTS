@@ -85,15 +85,13 @@ async function getOlshop(id) {
  * @returns {boolean}
  */
 
-async function createOlshop(
-  customer_name,
-  address,
-  product,
-  invoice,
-  price,
-  quantity
-) {
-  const date_checkout = new Date().toString();
+async function createOlshop(customer_name, address, product, price, quantity) {
+  // makin invoice number
+  const timestamp = Date.now().toString();
+  const random = Math.random().toString(36).substring(2, 8);
+  const invoice = timestamp + random;
+
+  const date_checkout = new Date();
   try {
     await olshopsRepository.createOlshop(
       customer_name,
