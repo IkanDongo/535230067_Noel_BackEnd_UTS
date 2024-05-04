@@ -8,7 +8,7 @@ const olshopsValidator = require('./olshops-validator');
 const route = express.Router();
 
 module.exports = (app) => {
-  app.use('/Olshop', route);
+  app.use('/olshop', route);
 
   // Get list of users
   route.get('/', authenticationMiddleware, olshopsControllers.getOlshops);
@@ -34,7 +34,7 @@ module.exports = (app) => {
 
   // Delete user
   route.delete(
-    'purchases/:id',
+    '/purchases/:id',
     authenticationMiddleware,
     olshopsControllers.deleteOlshop
   );

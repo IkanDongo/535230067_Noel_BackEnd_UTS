@@ -1,4 +1,5 @@
 const { Olshop } = require('../../../models');
+const { product } = require('../../../models/olshops-schema');
 
 /**
  * Get a list of users
@@ -59,18 +60,18 @@ async function createOlshop(
   customer_name,
   address,
   product,
-  invoice,
   price,
   quantity,
+  invoice,
   date_checkout
 ) {
   return Olshop.create({
     customer_name,
     address,
     product,
-    invoice,
     price,
     quantity,
+    invoice,
     date_checkout,
   });
 }
@@ -82,10 +83,10 @@ async function createOlshop(
  * @param {string} email - Email
  * @returns {Promise}
  */
-async function updateOlshop(product, price, quantity) {
+async function updateOlshop(id, product, price, quantity) {
   return Olshop.updateOne(
     {
-      id: id,
+      _id: id,
     },
     {
       $set: {

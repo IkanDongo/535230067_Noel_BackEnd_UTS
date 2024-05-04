@@ -43,12 +43,13 @@ async function getOlshops(page_number, page_size, search, sort) {
         customer_name: olshop.customer_name,
         address: olshop.address,
         product: olshop.product,
-        invoice: olshop.invoice,
         price: olshop.price,
         quantity: olshop.quantity,
-        date_checkout: olshop.date_checkout,
+        invoice: olshop.invoice,
+        date_checkout: olshop.date,
       });
     }
+
     return results;
   }
   return results;
@@ -70,10 +71,10 @@ async function getOlshop(id) {
     customer_name: olshop.customer_name,
     address: olshop.address,
     product: olshop.product,
-    invoice: olshop.invoice,
     price: olshop.price,
     quantity: olshop.quantity,
-    date_checkout: olshop.date_checkout,
+    invoice: olshop.invoice,
+    date_checkout: olshop.date,
   };
 }
 
@@ -86,26 +87,27 @@ async function getOlshop(id) {
  */
 
 async function createOlshop(customer_name, address, product, price, quantity) {
-  // makin invoice number
-  const timestamp = Date.now().toString();
-  const random = Math.random().toString(36).substring(2, 8);
-  const invoice = timestamp + random;
+  // making invoice number
+  let time = Date.now().toString();
+  let random = Math.random().toString(36).substring(2, 8);
+  let invoice = time + random;
 
-  const date_checkout = new Date();
+  let date_checkout = new Date();
   try {
     await olshopsRepository.createOlshop(
       customer_name,
       address,
       product,
-      invoice,
       price,
       quantity,
+      invoice,
       date_checkout
     );
   } catch (err) {
     return null;
   }
-
+  console.log(price);
+  console.log(quantity);
   return true;
 }
 
@@ -114,9 +116,9 @@ async function createOlshop(customer_name, address, product, price, quantity) {
  * @param {string} id - User ID
  * @param {string} name - Name
  * @param {string} email - Email
- * @returns {boolean}
+ * @returns {boolean}s
  */
-async function updateOlshop(product, price, quantity) {
+async function updateOlshop(id, product, price, quantity) {
   const order = await olshopsRepository.getOlshop(id);
 
   // User not found
@@ -125,7 +127,7 @@ async function updateOlshop(product, price, quantity) {
   }
 
   try {
-    await olshopsRepository.updateOlshop(product, price, quantity);
+    await olshopsRepository.updateOlshop(id, product, price, quantity);
   } catch (err) {
     return null;
   }

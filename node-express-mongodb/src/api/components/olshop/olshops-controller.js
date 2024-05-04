@@ -14,14 +14,14 @@ async function getOlshops(request, response, next) {
     const page_size = parseInt(request.query.page_size) || 1 / 0;
     const search = request.query.search || '';
     const sort = request.query.sort || 'name:asc';
-    const users = await olshopsService.getOlshops(
+    const olshops = await olshopsService.getOlshops(
       page_number,
       page_size,
       search,
       sort
     );
 
-    return response.status(200).json(users);
+    return response.status(200).json(olshops);
   } catch (error) {
     return next(error);
   }
@@ -60,33 +60,35 @@ async function createOlshop(request, response, next) {
     const customer_name = request.body.customer_name;
     const address = request.body.address;
     const product = request.body.product;
-    const invoice = request.body.invoice;
     const price = request.body.price;
     const quantity = request.body.quantity;
+    const invoice = request.body.invoice;
     const date_checkout = request.body.date_checkout;
+
     const success = await olshopsService.createOlshop(
       customer_name,
       address,
       product,
-      invoice,
       price,
       quantity,
+      invoice,
       date_checkout
     );
+
     if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
         'Failed to create olshop'
       );
     }
-
     return response.status(200).json({
       customer_name,
       address,
       product,
-      invoice,
       price,
       quantity,
+      invoice,
+      date_checkout,
     });
   } catch (error) {
     return next(error);
@@ -102,11 +104,17 @@ async function createOlshop(request, response, next) {
  */
 async function updateOlshop(request, response, next) {
   try {
+    const id = request.params.id;
     const product = request.body.product;
     const price = request.body.price;
     const quantity = request.body.quantity;
 
-    const success = await olshopsService.updateOlshop(product, price, quantity);
+    const success = await olshopsService.updateOlshop(
+      id,
+      product,
+      price,
+      quantity
+    );
     if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
@@ -114,7 +122,7 @@ async function updateOlshop(request, response, next) {
       );
     }
 
-    return response.status(200).json({ product, price, quantity });
+    return response.status(200).json({ id, product, price, quantity });
   } catch (error) {
     return next(error);
   }
