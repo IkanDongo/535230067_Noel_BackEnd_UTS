@@ -1,4 +1,5 @@
-const ProductsService = require('./product-service');
+const olshopsService = require('../olshop/olshops-service');
+const ProductsService = require('./products-service');
 const { errorResponder, errorTypes } = require('../../../core/errors');
 
 /**
@@ -140,10 +141,42 @@ async function deleteProduct(request, response, next) {
   }
 }
 
+/**
+ * Handle delete user request
+ * @param {object} request - Express request object
+ * @param {object} response - Express response object
+ * @param {object} next - Express route middlewares
+ * @returns {object} Response object or pass an error to the next route
+ */
+async function updateStock(request, response, next) {
+  try {
+    const product = request.body.product;
+    const price = request.body.price;
+    const quantity = request.body.quantity;
+
+    const success = await olshopsService.updateProduct(
+      product,
+      price,
+      quantity
+    );
+    if (!success) {
+      throw errorResponder(
+        errorTypes.UNPROCESSABLE_ENTITY,
+        'Failed to update user'
+      );
+    }
+
+    return response.status(200).json({ product, quantity });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 module.exports = {
   getProducts,
   getProduct,
   createProduct,
   updateProduct,
   deleteProduct,
+  updateStock,
 };
