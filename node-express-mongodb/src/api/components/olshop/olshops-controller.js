@@ -14,7 +14,7 @@ async function getOlshops(request, response, next) {
     const page_size = parseInt(request.query.page_size) || 1 / 0;
     const search = request.query.search || '';
     const sort = request.query.sort || 'name:asc';
-    const users = await usersService.getUsers(
+    const users = await olshopsService.getOlshops(
       page_number,
       page_size,
       search,
@@ -63,8 +63,7 @@ async function createOlshop(request, response, next) {
     const invoice = request.body.invoice;
     const price = request.body.price;
     const quantity = request.body.quantity;
-    const date_checkout = new Date().toLocaleString();
-
+    const date_checkout = request.body.date_checkout;
     const success = await olshopsService.createOlshop(
       customer_name,
       address,
@@ -77,7 +76,7 @@ async function createOlshop(request, response, next) {
     if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to create user'
+        'Failed to create olshop'
       );
     }
 

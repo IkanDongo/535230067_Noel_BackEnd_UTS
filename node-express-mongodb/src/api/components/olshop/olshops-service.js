@@ -10,20 +10,20 @@ const olshopsRepository = require('./olshops-repository');
  */
 
 async function getOlshops(page_number, page_size, search, sort) {
-  const users = await olshopsRepository.getOlshops(
+  const olshops = await olshopsRepository.getOlshops(
     page_number,
     page_size,
     search,
     sort
   );
-  const totalcount = await olshopsRepository.getOlshopsCount(
+  const totalcount = await olshopsRepository.getOlshopCount(
     page_number,
     page_size,
     search
   );
   const totalpages = Math.ceil(totalcount / page_size);
   const previouspage = page_number > 1;
-  const nextpage = page_number < totalpages;
+  const nextpage = page_number < totalpages - 1;
 
   const results = {
     page_number: page_number + 1,
@@ -32,17 +32,21 @@ async function getOlshops(page_number, page_size, search, sort) {
     total_pages: totalpages,
     has_previous_page: previouspage,
     has_next_page: nextpage,
-    users: userss(users),
+    olshops: olshopss(olshops),
   };
 
-  function userss(users) {
+  function olshopss(olshops) {
     const results = [];
-    for (let i = 0; i < users.length; i += 1) {
-      const user = users[i];
+    for (let i = 0; i < olshops.length; i += 1) {
+      const olshop = olshops[i];
       results.push({
-        id: user.id,
-        name: user.name,
-        email: user.email,
+        customer_name: olshop.customer_name,
+        address: olshop.address,
+        product: olshop.product,
+        invoice: olshop.invoice,
+        price: olshop.price,
+        quantity: olshop.quantity,
+        date_checkout: olshop.date_checkout,
       });
     }
     return results;
@@ -80,6 +84,7 @@ async function getOlshop(id) {
  * @param {string} password - Password
  * @returns {boolean}
  */
+
 async function createOlshop(
   customer_name,
   address,

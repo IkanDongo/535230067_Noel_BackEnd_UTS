@@ -17,11 +17,11 @@ db.once('open', () => {
 
 const User = mongoose.model('users', mongoose.Schema(usersSchema));
 const Attempt = mongoose.model('attempt', mongoose.Schema(usersAttempt));
-const Olshops = mongoose.model('Olshops', mongoose.Schema(olshopsSchema));
+const Olshop = mongoose.model('Olshops', mongoose.Schema(olshopsSchema));
 
 module.exports = {
   mongoose,
   User,
   Attempt,
-  Olshops,
+  Olshop,
 };

@@ -26,7 +26,7 @@ async function getOlshops(page_number, page_size, search, sort) {
   return olshops;
 }
 
-async function getOlshopcount(page_number, page_size, search) {
+async function getOlshopCount(page_number, page_size, search) {
   let filter = {};
   var search = search.split(':');
   if (search[0] === 'email') {
@@ -108,7 +108,7 @@ async function deleteOlshop(id) {
 
 module.exports = {
   getOlshops,
-  getOlshopcount,
+  getOlshopCount,
   getOlshop,
   createOlshop,
   updateOlshop,
