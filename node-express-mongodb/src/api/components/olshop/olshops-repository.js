@@ -9,13 +9,11 @@ const { Olshop } = require('../../../models');
  * @returns {Promise}
  */
 async function getOlshops(page_number, page_size, search, sort) {
-  // let filter = {};
-  // var search = search.split(':');
-  // if (search[0] === 'email') {
-  //   filter = { email: { $regex: search[1], $options: 'i' } };
-  // } else if (search[0] === 'name') {
-  //   filter = { name: { $regex: search[1], $options: 'i' } };
-  // }
+  let filter = {};
+  var search = search.split(':');
+  if (search[0] === 'category') {
+    filter = { category: { $regex: search[1], $options: 'i' } };
+  }
 
   let sorting = {};
   var sort = sort.split(':');

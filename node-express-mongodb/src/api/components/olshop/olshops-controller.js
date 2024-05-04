@@ -63,7 +63,7 @@ async function createOlshop(request, response, next) {
     const invoice = request.body.invoice;
     const price = request.body.price;
     const quantity = request.body.quantity;
-    const date_checkout = request.body.date_checkout;
+    const date_checkout = new Date().toLocaleString();
 
     const success = await olshopsService.createOlshop(
       customer_name,

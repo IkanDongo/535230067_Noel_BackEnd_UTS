@@ -15,7 +15,7 @@ module.exports = (app) => {
 
   // Create user
   route.post(
-    '/',
+    '/purchases',
     authenticationMiddleware,
     celebrate(olshopsValidator.createOlshop),
     olshopsControllers.createOlshop
@@ -26,7 +26,7 @@ module.exports = (app) => {
 
   // Update user
   route.put(
-    '/:id',
+    '/purchases/:id',
     authenticationMiddleware,
     celebrate(olshopsValidator.updateOlshop),
     olshopsControllers.updateOlshop
@@ -34,16 +34,8 @@ module.exports = (app) => {
 
   // Delete user
   route.delete(
-    '/:id',
+    'purchases/:id',
     authenticationMiddleware,
     olshopsControllers.deleteOlshop
-  );
-
-  // Change password
-  route.post(
-    '/:id/change-Olshop',
-    authenticationMiddleware,
-    celebrate(olshopsValidator.changeOlshop),
-    olshopsControllers.changeOlshop
   );
 };
