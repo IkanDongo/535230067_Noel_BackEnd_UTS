@@ -87,7 +87,6 @@ async function createOlshop(request, response, next) {
       invoice,
       price,
       quantity,
-      date_checkout,
     });
   } catch (error) {
     return next(error);

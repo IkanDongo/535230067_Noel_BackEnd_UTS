@@ -91,9 +91,9 @@ async function createOlshop(
   product,
   invoice,
   price,
-  quantity,
-  date_checkout
+  quantity
 ) {
+  const date_checkout = new Date().toString();
   try {
     await olshopsRepository.createOlshop(
       customer_name,
