@@ -5,6 +5,7 @@ const olshopsSchema = {
   invoice: String,
   price: String,
   quantity: String,
+  date_checkout: String,
 };
 
 module.exports = olshopsSchema;
