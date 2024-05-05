@@ -1,5 +1,4 @@
 const { Olshop } = require('../../../models');
-const { product } = require('../../../models/olshops-schema');
 
 /**
  * Get a list of olshop
