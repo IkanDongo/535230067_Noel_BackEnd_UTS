@@ -18,8 +18,8 @@ db.once('open', () => {
 
 const User = mongoose.model('users', mongoose.Schema(usersSchema));
 const Attempt = mongoose.model('attempt', mongoose.Schema(usersAttempt));
-const Olshop = mongoose.model('Olshops', mongoose.Schema(olshopsSchema));
-const Product = mongoose.model('Products', mongoose.Schema(productsSchema));
+const Olshop = mongoose.model('olshops', mongoose.Schema(olshopsSchema));
+const Product = mongoose.model('products', mongoose.Schema(productsSchema));
 
 module.exports = {
   mongoose,

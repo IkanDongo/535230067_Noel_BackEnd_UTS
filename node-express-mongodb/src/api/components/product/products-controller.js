@@ -1,5 +1,5 @@
 const olshopsService = require('../olshop/olshops-service');
-const ProductsService = require('./products-service');
+const productsService = require('./products-service');
 const { errorResponder, errorTypes } = require('../../../core/errors');
 
 /**
@@ -15,7 +15,7 @@ async function getProducts(request, response, next) {
     const page_size = parseInt(request.query.page_size) || 1 / 0;
     const search = request.query.search || '';
     const sort = request.query.sort || 'name:asc';
-    const users = await ProductsService.getProducts(
+    const users = await productsService.getProducts(
       page_number,
       page_size,
       search,
@@ -37,7 +37,7 @@ async function getProducts(request, response, next) {
  */
 async function getProduct(request, response, next) {
   try {
-    const order = await ProductsService.getProduct(request.params.id);
+    const order = await productsService.getProduct(request.params.id);
 
     if (!order) {
       throw errorResponder(errorTypes.UNPROCESSABLE_ENTITY, 'Unknown order');
@@ -61,7 +61,16 @@ async function createProduct(request, response, next) {
     const product = request.body.product;
     const quantity = request.body.quantity;
     const price = request.body.price;
-    const success = await ProductsService.createProduct(
+
+    const itemIsRegistered = await productsService.itemIsRegistered(product);
+    if (itemIsRegistered) {
+      throw errorResponder(
+        errorTypes.ITEM_ALREADY_TAKEN,
+        'Item is already registered'
+      );
+    }
+
+    const success = await productsService.createProduct(
       product,
       quantity,
       price
@@ -92,13 +101,11 @@ async function createProduct(request, response, next) {
  */
 async function updateProduct(request, response, next) {
   try {
-    const id = request.params.id;
     const product = request.body.product;
     const price = request.body.price;
     const quantity = request.body.quantity;
 
-    const success = await ProductsService.updateProduct(
-      id,
+    const success = await productsService.updateProduct(
       product,
       price,
       quantity
@@ -109,7 +116,12 @@ async function updateProduct(request, response, next) {
         'Failed to update user'
       );
     }
-
+    if (product == product) {
+      throw errorResponder(
+        errorTypes.UNPROCESSABLE_ENTITY,
+        'The product name is the same'
+      );
+    }
     return response.status(200).json({ id });
   } catch (error) {
     return next(error);
@@ -127,7 +139,7 @@ async function deleteProduct(request, response, next) {
   try {
     const id = request.params.id;
 
-    const success = await ProductsService.deleteProduct(id);
+    const success = await productsService.deleteProduct(id);
     if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
@@ -142,7 +154,7 @@ async function deleteProduct(request, response, next) {
 }
 
 /**
- * Handle delete user request
+ * Handle update user request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -151,22 +163,17 @@ async function deleteProduct(request, response, next) {
 async function updateStock(request, response, next) {
   try {
     const product = request.body.product;
-    const price = request.body.price;
     const quantity = request.body.quantity;
 
-    const success = await olshopsService.updateProduct(
-      product,
-      price,
-      quantity
-    );
+    const success = await olshopsService.updateStock(product, quantity);
     if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to update user'
+        'Failed to update stock'
       );
     }
 
-    return response.status(200).json({ product, quantity });
+    return response.status(200).json({ id });
   } catch (error) {
     return next(error);
   }

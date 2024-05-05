@@ -24,13 +24,14 @@ async function checkLoginCredentials(email, password, attempt) {
   const passwordChecked = await passwordMatched(password, userPassword);
 
   //its for the timer if reach 6
-  if (attempt >= 6) {
+  if (attempt > 6) {
     attempt = 1;
     setTimeout(
       () => authenticationRepository.updateAttempt(email, attempt),
-      1800000
+      120000
     );
   }
+  console.log(attempt);
   // Because we always check the password (see above comment), we define the
   // login attempt as successful when the `user` is found (by email) and
   // the password matches.

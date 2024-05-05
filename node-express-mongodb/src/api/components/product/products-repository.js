@@ -70,7 +70,7 @@ async function createProduct(product, quantity, price) {
  * @param {string} email - Email
  * @returns {Promise}
  */
-async function updateProduct(product, price, quantity) {
+async function updateProduct(id, product, price, quantity) {
   return Product.updateOne(
     {
       _id: id,
@@ -86,12 +86,41 @@ async function updateProduct(product, price, quantity) {
 }
 
 /**
+ * Update existing user
+ * @param {string} id - User ID
+ * @param {string} name - Name
+ * @param {string} email - Email
+ * @returns {Promise}
+ */
+async function updateStock(id, quantity) {
+  return Product.updateOne(
+    {
+      _id: id,
+    },
+    {
+      $set: {
+        quantity,
+      },
+    }
+  );
+}
+
+/**
  * Delete a user
  * @param {string} id - User ID
  * @returns {Promise}
  */
 async function deleteProduct(id) {
   return Product.deleteOne({ _id: id });
+}
+
+/**
+ * Get user by email to prevent duplicate email
+ * @param {string} email - Email
+ * @returns {Promise}
+ */
+async function getProductByName(product) {
+  return Product.findOne({ product });
 }
 
 module.exports = {
@@ -101,4 +130,6 @@ module.exports = {
   createProduct,
   updateProduct,
   deleteProduct,
+  getProductByName,
+  updateStock,
 };

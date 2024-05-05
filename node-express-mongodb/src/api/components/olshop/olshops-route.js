@@ -22,7 +22,7 @@ module.exports = (app) => {
   );
 
   // Get user detail
-  route.get('/:id', authenticationMiddleware, olshopsControllers.getOlshop);
+  route.get('/:id', authenticationMiddleware, olshopsControllers.getOlshops);
 
   // Update user
   route.put(

@@ -1,4 +1,4 @@
-const ProductsRepository = require('./products-repository');
+const productsRepository = require('./products-repository');
 
 /**
  * Get list of users
@@ -10,13 +10,13 @@ const ProductsRepository = require('./products-repository');
  */
 
 async function getProducts(page_number, page_size, search, sort) {
-  const Products = await ProductsRepository.getProducts(
+  const Products = await productsRepository.getProducts(
     page_number,
     page_size,
     search,
     sort
   );
-  const totalcount = await ProductsRepository.getProductCount(
+  const totalcount = await productsRepository.getProductCount(
     page_number,
     page_size,
     search
@@ -56,7 +56,7 @@ async function getProducts(page_number, page_size, search, sort) {
  * @returns {Object}
  */
 async function getProduct(id) {
-  const Product = await ProductsRepository.getProduct(id);
+  const Product = await productsRepository.getProduct(id);
   // User not found
   if (!Product) {
     return null;
@@ -79,7 +79,7 @@ async function getProduct(id) {
 
 async function createProduct(product, quantity, price) {
   try {
-    await ProductsRepository.createProduct(product, quantity, price);
+    await productsRepository.createProduct(product, quantity, price);
   } catch (err) {
     return null;
   }
@@ -95,15 +95,15 @@ async function createProduct(product, quantity, price) {
  * @returns {boolean}
  */
 async function updateProduct(id, product, price, quantity) {
-  const order = await ProductsRepository.getProduct(id);
+  const order = await productsRepository.getProduct(id);
 
-  // User not found
+  // Product not found
   if (!order) {
     return null;
   }
 
   try {
-    await ProductsRepository.updateProduct(id, product, price, quantity);
+    await productsRepository.updateProduct(id, product, price, quantity);
   } catch (err) {
     return null;
   }
@@ -117,7 +117,7 @@ async function updateProduct(id, product, price, quantity) {
  * @returns {boolean}
  */
 async function deleteProduct(id) {
-  const order = await ProductsRepository.getProduct(id);
+  const order = await productsRepository.getProduct(id);
 
   // User not found
   if (!order) {
@@ -125,18 +125,32 @@ async function deleteProduct(id) {
   }
 
   try {
-    await ProductsRepository.deleteProduct(id);
+    await productsRepository.deleteProduct(id);
   } catch (err) {
     return null;
   }
 
   return true;
 }
+/**
+ * Check whether the product is registered
+ * @param {string} product - Poduct
+ * @returns {boolean}
+ */
+async function itemIsRegistered(product) {
+  const Item = await productsRepository.getProductByName(product);
 
+  if (Item) {
+    return true;
+  }
+
+  return false;
+}
 module.exports = {
   getProducts,
   getProduct,
   createProduct,
   updateProduct,
   deleteProduct,
+  itemIsRegistered,
 };

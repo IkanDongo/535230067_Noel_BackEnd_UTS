@@ -2,8 +2,8 @@ const express = require('express');
 
 const authenticationMiddleware = require('../../middlewares/authentication-middleware');
 const celebrate = require('../../../core/celebrate-wrappers');
-const productsControllers = require('../products-controller');
-const productsValidator = require('../products-validator');
+const productsControllers = require('./products-controller');
+const productsValidator = require('./products-validator');
 
 const route = express.Router();
 
@@ -11,11 +11,7 @@ module.exports = (app) => {
   app.use('/product', route);
 
   // Get list of users
-  route.get(
-    '/products',
-    authenticationMiddleware,
-    productsControllers.getProducts
-  );
+  route.get('/', authenticationMiddleware, productsControllers.getProducts);
 
   // Create user
   route.post(
@@ -33,7 +29,7 @@ module.exports = (app) => {
     '/products/:id',
     authenticationMiddleware,
     celebrate(productsValidator.updateProduct),
-    productsControllers.updateProducts
+    productsControllers.updateProduct
   );
 
   // Delete user

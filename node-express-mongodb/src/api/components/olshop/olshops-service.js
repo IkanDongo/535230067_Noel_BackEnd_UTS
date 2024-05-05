@@ -1,4 +1,5 @@
 const olshopsRepository = require('./olshops-repository');
+const productsRepository = require('../product/products-repository');
 
 /**
  * Get list of users
@@ -94,6 +95,15 @@ async function createOlshop(customer_name, address, product, price, quantity) {
 
   let date_checkout = new Date();
   try {
+    const checkStock = await productsRepository.getProductByName(product);
+    if (!checkStock) {
+      return null;
+    }
+    const item = checkStock.quantity - quantity;
+    const Stock = await productsRepository.updateStock(checkStock.id, item);
+    if (!Stock) {
+      return null;
+    }
     await olshopsRepository.createOlshop(
       customer_name,
       address,
@@ -106,8 +116,6 @@ async function createOlshop(customer_name, address, product, price, quantity) {
   } catch (err) {
     return null;
   }
-  console.log(price);
-  console.log(quantity);
   return true;
 }
 
