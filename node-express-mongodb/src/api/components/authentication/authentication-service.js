@@ -24,11 +24,11 @@ async function checkLoginCredentials(email, password, attempt) {
   const passwordChecked = await passwordMatched(password, userPassword);
 
   //its for the timer if reach 6
-  if (attempt > 6) {
+  if (attempt >= 6) {
     attempt = 1;
     setTimeout(
       () => authenticationRepository.updateAttempt(email, attempt),
-      120000
+      30 * 60 * 1000
     );
   }
   console.log(attempt);
@@ -36,7 +36,7 @@ async function checkLoginCredentials(email, password, attempt) {
   // login attempt as successful when the `user` is found (by email) and
   // the password matches.
   if (user && passwordChecked) {
-    //if succes the attempt will reset it self to 1
+    //if success the attempt will reset it self to 1
     attempt = 1;
     authenticationRepository.updateAttempt(email, attempt);
     return {
@@ -78,7 +78,7 @@ async function createAttempt(email, attempt) {
   return true;
 }
 /**
- * Update existing user
+ * Update existing attempt
  * @param {string} email - Email
  * @param {string} attempt - Attempt
  * @returns {Promise}

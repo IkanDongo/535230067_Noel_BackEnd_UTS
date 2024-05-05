@@ -3,7 +3,7 @@ const productsService = require('./products-service');
 const { errorResponder, errorTypes } = require('../../../core/errors');
 
 /**
- * Handle get list of users request
+ * Handle get list of products request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -29,7 +29,7 @@ async function getProducts(request, response, next) {
 }
 
 /**
- * Handle get user detail request
+ * Handle get product detail request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -50,7 +50,7 @@ async function getProduct(request, response, next) {
 }
 
 /**
- * Handle create user request
+ * Handle create product request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -93,7 +93,7 @@ async function createProduct(request, response, next) {
 }
 
 /**
- * Handle update user request
+ * Handle update product request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -101,11 +101,21 @@ async function createProduct(request, response, next) {
  */
 async function updateProduct(request, response, next) {
   try {
+    const id = request.params.id;
     const product = request.body.product;
     const price = request.body.price;
     const quantity = request.body.quantity;
 
+    const itemIsRegistered = await productsService.itemIsRegistered(product);
+    if (itemIsRegistered) {
+      throw errorResponder(
+        errorTypes.ITEM_ALREADY_TAKEN,
+        'Item is already registered'
+      );
+    }
+
     const success = await productsService.updateProduct(
+      id,
       product,
       price,
       quantity
@@ -113,13 +123,7 @@ async function updateProduct(request, response, next) {
     if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to update user'
-      );
-    }
-    if (product == product) {
-      throw errorResponder(
-        errorTypes.UNPROCESSABLE_ENTITY,
-        'The product name is the same'
+        'Failed to update product'
       );
     }
     return response.status(200).json({ id });
@@ -129,7 +133,7 @@ async function updateProduct(request, response, next) {
 }
 
 /**
- * Handle delete user request
+ * Handle delete product request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -154,7 +158,7 @@ async function deleteProduct(request, response, next) {
 }
 
 /**
- * Handle update user request
+ * Handle update product request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -162,10 +166,10 @@ async function deleteProduct(request, response, next) {
  */
 async function updateStock(request, response, next) {
   try {
-    const product = request.body.product;
+    const id = request.params.id;
     const quantity = request.body.quantity;
 
-    const success = await olshopsService.updateStock(product, quantity);
+    const success = await productsService.updateStock(id, quantity);
     if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
@@ -173,7 +177,7 @@ async function updateStock(request, response, next) {
       );
     }
 
-    return response.status(200).json({ id });
+    return response.status(200).json({ id, quantity });
   } catch (error) {
     return next(error);
   }

@@ -1,7 +1,7 @@
 const productsRepository = require('./products-repository');
 
 /**
- * Get list of users
+ * Get list of products
  * @param {number} page_number - Page number
  * @param {number} page_size - Page size
  * @param {string} search - Search keyword for email
@@ -51,13 +51,13 @@ async function getProducts(page_number, page_size, search, sort) {
 }
 
 /**
- * Get user detail
- * @param {string} id - User ID
+ * Get product detail
+ * @param {string} id - Product ID
  * @returns {Object}
  */
 async function getProduct(id) {
   const Product = await productsRepository.getProduct(id);
-  // User not found
+  // Product not found
   if (!Product) {
     return null;
   }
@@ -70,10 +70,10 @@ async function getProduct(id) {
 }
 
 /**
- * Create new user
- * @param {string} name - Name
- * @param {string} email - Email
- * @param {string} password - Password
+ * Create new product
+ * @param {string} product - Product
+ * @param {string} price - Price
+ * @param {string} quantity - Quantity
  * @returns {boolean}
  */
 
@@ -88,10 +88,11 @@ async function createProduct(product, quantity, price) {
 }
 
 /**
- * Update existing user
- * @param {string} id - User ID
- * @param {string} name - Name
- * @param {string} email - Email
+ * Update existing product
+ * @param {string} id - Product ID
+ * @param {string} product - Product
+ * @param {string} price - Price
+ * @param {string} quantity - Quantity
  * @returns {boolean}
  */
 async function updateProduct(id, product, price, quantity) {
@@ -110,16 +111,41 @@ async function updateProduct(id, product, price, quantity) {
 
   return true;
 }
+/**
+ * Update existing stock
+ * @param {string} id - Product ID
+ * @param {string} product - Product
+ * @param {string} price - Price
+ * @param {string} quantity - Quantity
+ * @returns {boolean}
+ */
+async function updateStock(id, quantity) {
+  try {
+    const checkStock = await productsRepository.getProduct(id);
+    if (!checkStock) {
+      return null;
+    }
+    const item = checkStock.quantity + quantity;
+    const Stock = await productsRepository.updateStock(checkStock.id, item);
+
+    if (!Stock) {
+      return null;
+    }
+    return true;
+  } catch (err) {
+    return null;
+  }
+}
 
 /**
- * Delete user
- * @param {string} id - User ID
+ * Delete product
+ * @param {string} id - Product ID
  * @returns {boolean}
  */
 async function deleteProduct(id) {
   const order = await productsRepository.getProduct(id);
 
-  // User not found
+  // Order not found
   if (!order) {
     return null;
   }
@@ -134,7 +160,7 @@ async function deleteProduct(id) {
 }
 /**
  * Check whether the product is registered
- * @param {string} product - Poduct
+ * @param {string} product - Product
  * @returns {boolean}
  */
 async function itemIsRegistered(product) {
@@ -153,4 +179,5 @@ module.exports = {
   updateProduct,
   deleteProduct,
   itemIsRegistered,
+  updateStock,
 };

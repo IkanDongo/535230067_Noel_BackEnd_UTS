@@ -2,7 +2,7 @@ const olshopsService = require('./olshops-service');
 const { errorResponder, errorTypes } = require('../../../core/errors');
 
 /**
- * Handle get list of users request
+ * Handle get list of oslhop request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -28,7 +28,7 @@ async function getOlshops(request, response, next) {
 }
 
 /**
- * Handle get user detail request
+ * Handle get olshop detail request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -49,7 +49,7 @@ async function getOlshop(request, response, next) {
 }
 
 /**
- * Handle create user request
+ * Handle create olshop request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -78,7 +78,7 @@ async function createOlshop(request, response, next) {
     if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to create olshop'
+        'Failed to create order'
       );
     }
     return response.status(200).json({
@@ -96,7 +96,7 @@ async function createOlshop(request, response, next) {
 }
 
 /**
- * Handle update user request
+ * Handle update olshop request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares
@@ -118,7 +118,7 @@ async function updateOlshop(request, response, next) {
     if (!success) {
       throw errorResponder(
         errorTypes.UNPROCESSABLE_ENTITY,
-        'Failed to update user'
+        'Failed to update order'
       );
     }
 
@@ -129,7 +129,7 @@ async function updateOlshop(request, response, next) {
 }
 
 /**
- * Handle delete user request
+ * Handle delete olshop request
  * @param {object} request - Express request object
  * @param {object} response - Express response object
  * @param {object} next - Express route middlewares

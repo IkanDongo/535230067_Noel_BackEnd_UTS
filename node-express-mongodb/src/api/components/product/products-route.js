@@ -8,12 +8,12 @@ const productsValidator = require('./products-validator');
 const route = express.Router();
 
 module.exports = (app) => {
-  app.use('/product', route);
+  app.use('/catalog', route);
 
-  // Get list of users
+  // Get list of products
   route.get('/', authenticationMiddleware, productsControllers.getProducts);
 
-  // Create user
+  // Create product
   route.post(
     '/products',
     authenticationMiddleware,
@@ -21,10 +21,10 @@ module.exports = (app) => {
     productsControllers.createProduct
   );
 
-  // Get user id detail
+  // Get product id detail
   route.get('/:id', authenticationMiddleware, productsControllers.getProduct);
 
-  // Update user
+  // Update product
   route.put(
     '/products/:id',
     authenticationMiddleware,
@@ -32,7 +32,15 @@ module.exports = (app) => {
     productsControllers.updateProduct
   );
 
-  // Delete user
+  // Update stock
+  route.put(
+    '/stock/:id',
+    authenticationMiddleware,
+    celebrate(productsValidator.updateStock),
+    productsControllers.updateStock
+  );
+
+  // Delete product
   route.delete(
     '/products/:id',
     authenticationMiddleware,

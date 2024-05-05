@@ -10,10 +10,10 @@ const route = express.Router();
 module.exports = (app) => {
   app.use('/olshop', route);
 
-  // Get list of users
+  // Get list of olshops
   route.get('/', authenticationMiddleware, olshopsControllers.getOlshops);
 
-  // Create user
+  // Create olshop
   route.post(
     '/purchases',
     authenticationMiddleware,
@@ -21,10 +21,10 @@ module.exports = (app) => {
     olshopsControllers.createOlshop
   );
 
-  // Get user detail
+  // Get olshop detail
   route.get('/:id', authenticationMiddleware, olshopsControllers.getOlshops);
 
-  // Update user
+  // Update olshop
   route.put(
     '/purchases/:id',
     authenticationMiddleware,
@@ -32,7 +32,7 @@ module.exports = (app) => {
     olshopsControllers.updateOlshop
   );
 
-  // Delete user
+  // Delete olshop
   route.delete(
     '/purchases/:id',
     authenticationMiddleware,

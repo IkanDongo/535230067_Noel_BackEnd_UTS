@@ -1,6 +1,6 @@
 const productsSchema = {
   product: String,
-  quantity: String,
+  quantity: Number,
   price: String,
 };
 

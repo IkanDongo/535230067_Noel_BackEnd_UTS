@@ -2,7 +2,7 @@ const { Olshop } = require('../../../models');
 const { product } = require('../../../models/olshops-schema');
 
 /**
- * Get a list of users
+ * Get a list of olshop
  * @param {number} page_number - Page number
  * @param {number} page_size - Page size
  * @param {string} search - Search keyword for email
@@ -12,8 +12,8 @@ const { product } = require('../../../models/olshops-schema');
 async function getOlshops(page_number, page_size, search, sort) {
   let filter = {};
   var search = search.split(':');
-  if (search[0] === 'category') {
-    filter = { category: { $regex: search[1], $options: 'i' } };
+  if (search[0] === 'customer_name') {
+    filter = { customer_name: { $regex: search[1], $options: 'i' } };
   }
 
   let sorting = {};
@@ -30,10 +30,8 @@ async function getOlshops(page_number, page_size, search, sort) {
 async function getOlshopCount(page_number, page_size, search) {
   let filter = {};
   var search = search.split(':');
-  if (search[0] === 'email') {
-    filter = { email: { $regex: search[1], $options: 'i' } };
-  } else if (search[0] === 'name') {
-    filter = { name: { $regex: search[1], $options: 'i' } };
+  if (search[0] === 'customer_name') {
+    filter = { customer_name: { $regex: search[1], $options: 'i' } };
   }
 
   const count = Olshop.countDocuments(filter);
@@ -41,8 +39,8 @@ async function getOlshopCount(page_number, page_size, search) {
 }
 
 /**
- * Get user detail
- * @param {string} id - User ID
+ * Get olshop detail
+ * @param {string} id - olshop ID
  * @returns {Promise}
  */
 async function getOlshop(id) {
@@ -50,10 +48,14 @@ async function getOlshop(id) {
 }
 
 /**
- * Create new user
- * @param {string} name - Name
- * @param {string} email - Email
- * @param {string} password - Hashed password
+ * Create new olshop
+ * @param {string} customer_name - Cust name
+ * @param {string} address - address
+ * @param {string} product - Product
+ * @param {string} price - Price
+ * @param {string} quantity - Quantity
+ * @param {string} invoice - Invoice
+ * @param {string} date_checkout - Date of checkout
  * @returns {Promise}
  */
 async function createOlshop(
@@ -77,10 +79,10 @@ async function createOlshop(
 }
 
 /**
- * Update existing user
- * @param {string} id - User ID
- * @param {string} name - Name
- * @param {string} email - Email
+ * Update existing olshop
+ * @param {string} product - Product
+ * @param {string} price - Price
+ * @param {string} quantity - Quantity
  * @returns {Promise}
  */
 async function updateOlshop(id, product, price, quantity) {
@@ -99,8 +101,8 @@ async function updateOlshop(id, product, price, quantity) {
 }
 
 /**
- * Delete a user
- * @param {string} id - User ID
+ * Delete a olshop
+ * @param {string} id - olshop ID
  * @returns {Promise}
  */
 async function deleteOlshop(id) {

@@ -1,20 +1,22 @@
 const { Product } = require('../../../models');
+const { product } = require('../../../models/olshops-schema');
 
 /**
- * Get a list of users
+ * Get a list of products
  * @param {number} page_number - Page number
  * @param {number} page_size - Page size
  * @param {string} search - Search keyword for email
  * @param {string} sort - Sorting by ascending and descending
  * @returns {Promise}
  */
+//search for list product
 async function getProducts(page_number, page_size, search, sort) {
   let filter = {};
   var search = search.split(':');
-  if (search[0] === 'category') {
-    filter = { category: { $regex: search[1], $options: 'i' } };
+  if (search[0] === 'product') {
+    filter = { product: { $regex: search[1], $options: 'i' } };
   }
-
+  //sort for list product
   let sorting = {};
   var sort = sort.split(':');
   sorting[sort[0]] = sort[1];
@@ -25,14 +27,12 @@ async function getProducts(page_number, page_size, search, sort) {
     .sort(sorting);
   return Products;
 }
-
+//count for total product that have been search
 async function getProductCount(page_number, page_size, search) {
   let filter = {};
   var search = search.split(':');
-  if (search[0] === 'email') {
-    filter = { email: { $regex: search[1], $options: 'i' } };
-  } else if (search[0] === 'name') {
-    filter = { name: { $regex: search[1], $options: 'i' } };
+  if (search[0] === 'product') {
+    filter = { product: { $regex: search[1], $options: 'i' } };
   }
 
   const count = Product.countDocuments(filter);
@@ -40,8 +40,8 @@ async function getProductCount(page_number, page_size, search) {
 }
 
 /**
- * Get user detail
- * @param {string} id - User ID
+ * Get product detail
+ * @param {string} id - product ID
  * @returns {Promise}
  */
 async function getProduct(id) {
@@ -49,10 +49,10 @@ async function getProduct(id) {
 }
 
 /**
- * Create new user
- * @param {string} name - Name
- * @param {string} email - Email
- * @param {string} password - Hashed password
+ * Create new product
+ * @param {string} product - Product
+ * @param {string} price - Price
+ * @param {string} quantity - Quantity
  * @returns {Promise}
  */
 async function createProduct(product, quantity, price) {
@@ -64,10 +64,11 @@ async function createProduct(product, quantity, price) {
 }
 
 /**
- * Update existing user
- * @param {string} id - User ID
- * @param {string} name - Name
- * @param {string} email - Email
+ * Update existing product
+ * @param {string} id - product ID
+ * @param {string} product - Product
+ * @param {string} price - Price
+ * @param {string} quantity - Quantity
  * @returns {Promise}
  */
 async function updateProduct(id, product, price, quantity) {
@@ -86,10 +87,11 @@ async function updateProduct(id, product, price, quantity) {
 }
 
 /**
- * Update existing user
- * @param {string} id - User ID
- * @param {string} name - Name
- * @param {string} email - Email
+ * Update existing stock
+ * @param {string} id - product ID
+ * @param {string} product - Product
+ * @param {string} price - Price
+ * @param {string} quantity - Quantity
  * @returns {Promise}
  */
 async function updateStock(id, quantity) {
@@ -106,8 +108,8 @@ async function updateStock(id, quantity) {
 }
 
 /**
- * Delete a user
- * @param {string} id - User ID
+ * Delete a product
+ * @param {string} id - product ID
  * @returns {Promise}
  */
 async function deleteProduct(id) {
@@ -115,8 +117,8 @@ async function deleteProduct(id) {
 }
 
 /**
- * Get user by email to prevent duplicate email
- * @param {string} email - Email
+ * Get product by name to prevent duplicate product
+ * @param {string} product - Product
  * @returns {Promise}
  */
 async function getProductByName(product) {

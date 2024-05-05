@@ -4,7 +4,7 @@ const olshopsSchema = {
   product: String,
   invoice: String,
   price: String,
-  quantity: String,
+  quantity: Number,
   date_checkout: String,
 };
 
