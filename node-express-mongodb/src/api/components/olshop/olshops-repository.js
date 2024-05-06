@@ -9,12 +9,13 @@ const { Olshop } = require('../../../models');
  * @returns {Promise}
  */
 async function getOlshops(page_number, page_size, search, sort) {
+  // function search buat order berdasarkan customer name
   let filter = {};
   var search = search.split(':');
   if (search[0] === 'customer_name') {
     filter = { customer_name: { $regex: search[1], $options: 'i' } };
   }
-
+  // function for sort buat order
   let sorting = {};
   var sort = sort.split(':');
   sorting[sort[0]] = sort[1];

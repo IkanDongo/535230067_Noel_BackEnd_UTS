@@ -8,8 +8,8 @@ const { Product } = require('../../../models');
  * @param {string} sort - Sorting by ascending and descending
  * @returns {Promise}
  */
-//search for list product
 async function getProducts(page_number, page_size, search, sort) {
+  //search for list product dari product
   let filter = {};
   var search = search.split(':');
   if (search[0] === 'product') {

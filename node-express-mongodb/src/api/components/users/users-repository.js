@@ -9,6 +9,7 @@ const { User } = require('../../../models');
  * @returns {Promise}
  */
 async function getUsers(page_number, page_size, search, sort) {
+  // function search buat user
   let filter = {};
   var search = search.split(':');
   if (search[0] === 'email') {
@@ -16,7 +17,7 @@ async function getUsers(page_number, page_size, search, sort) {
   } else if (search[0] === 'name') {
     filter = { name: { $regex: search[1], $options: 'i' } };
   }
-
+  // function search buat user
   let sorting = {};
   var sort = sort.split(':');
   sorting[sort[0]] = sort[1];
